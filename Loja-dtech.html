@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dtechmaster — Loja</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --neon-cyan:#00F0FF;--cyan-med:#00D4E8;--teal:#00C4B4;
+  --azul-eletrico:#00A8E8;--navy-prof:#0A0F2D;--navy-esc:#05081A;
+  --branco:#FFFFFF;--cinza-tec:#A0B0C8;
+  --radius:12px;--radius-sm:8px;
+  --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+  --glow:0 0 20px rgba(0,240,255,0.3);
+  --header-bg:var(--navy-prof);
+  --header-border:rgba(0,240,255,0.15);
+  --footer-bg:var(--navy-prof);
+  --footer-border:rgba(0,240,255,0.1);
+}
+[data-theme="light"]{
+  --page-bg:#eaf4fb;--card-bg:rgba(255,255,255,0.88);--glass:rgba(0,168,232,0.06);
+  --text-primary:#0a1628;--text-secondary:#4a5e78;--text-muted:#7a8fa8;
+  --border-color:rgba(0,168,232,0.18);--border-strong:rgba(0,168,232,0.35);
+  --empty-border:rgba(0,168,232,0.25);--shadow-soft:0 4px 20px rgba(10,22,40,0.08);
+  --shadow-hover:0 8px 28px rgba(0,168,232,0.15);--section-label-color:#0a1628;
+  --accordion-header-hover:rgba(0,168,232,0.06);--product-hover:rgba(0,168,232,0.08);
+  --search-bg:rgba(255,255,255,0.95);--search-border:rgba(0,168,232,0.3);
+  --detail-bg:rgba(255,255,255,0.95);
+}
+[data-theme="dark"]{
+  --page-bg:#05081A;--card-bg:rgba(10,15,45,0.7);--glass:rgba(255,255,255,0.04);
+  --text-primary:#FFFFFF;--text-secondary:#A0B0C8;--text-muted:#6a7a90;
+  --border-color:rgba(0,240,255,0.1);--border-strong:rgba(0,240,255,0.25);
+  --empty-border:rgba(0,240,255,0.15);--shadow-soft:0 4px 20px rgba(0,0,0,0.3);
+  --shadow-hover:0 8px 28px rgba(0,240,255,0.12);--section-label-color:#FFFFFF;
+  --accordion-header-hover:rgba(255,255,255,0.04);--product-hover:rgba(0,240,255,0.06);
+  --search-bg:rgba(10,15,45,0.85);--search-border:rgba(0,240,255,0.25);
+  --detail-bg:rgba(10,15,45,0.85);
+}
+body{background:var(--page-bg);color:var(--text-primary);font-family:var(--font);min-height:100vh;overflow-x:hidden;transition:background .4s ease,color .4s ease}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:var(--font);border:none;outline:none}
+img{max-width:100%;display:block}
+
+.header{background:var(--header-bg);border-bottom:1px solid var(--header-border);position:sticky;top:0;z-index:1000;backdrop-filter:blur(20px)}
+.header-inner{max-width:1400px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo-area{display:flex;align-items:center;gap:12px}
+.logo-icon{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--neon-cyan),var(--azul-eletrico));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11px;color:var(--navy-esc);box-shadow:var(--glow);position:relative;overflow:hidden;flex-shrink:0}
+.logo-icon::after{content:'';position:absolute;inset:3px;border-radius:50%;border:2px solid rgba(255,255,255,0.3)}
+.logo-icon img{width:100%;height:100%;object-fit:cover;border-radius:50%;position:relative;z-index:1}
+.logo-text{font-size:1.3rem;font-weight:800;color:var(--neon-cyan);letter-spacing:1px}
+.nav-links{display:flex;gap:4px;align-items:center}
+.nav-links a{padding:8px 18px;border-radius:var(--radius-sm);font-size:0.95rem;font-weight:600;transition:all .25s;color:var(--cinza-tec)}
+.nav-links a:hover,.nav-links a.active{color:var(--neon-cyan);background:rgba(255,255,255,0.06)}
+.nav-toggle{display:none;background:none;color:var(--neon-cyan);font-size:1.5rem;padding:8px}
+.theme-toggle{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(0,240,255,0.2);color:var(--neon-cyan);font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .3s;margin-left:8px}
+.theme-toggle:hover{background:rgba(0,240,255,0.15);transform:rotate(20deg)}
+
+.section-label{font-size:1.1rem;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:10px;max-width:1200px;margin-left:auto;margin-right:auto;padding:0 20px;color:var(--section-label-color);transition:color .4s ease}
+.section-label::before{content:'';width:4px;height:22px;border-radius:2px;background:var(--neon-cyan)}
+
+.slider-wrapper{position:relative;width:100%;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);padding:8px 0}
+.slider-track{display:flex;gap:14px;width:max-content;animation:sliderScroll 28s linear infinite}
+.slider-track:hover{animation-play-state:paused}
+.slider-track.static{animation:none;justify-content:center;width:100%}
+@keyframes sliderScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+.promo-section{padding:24px 0 16px}
+.promo-card{flex-shrink:0;width:280px;height:130px;border-radius:var(--radius);overflow:hidden;cursor:pointer;position:relative;border:1px solid var(--border-color);transition:all .3s;background:var(--card-bg)}
+.promo-card:hover{border-color:var(--neon-cyan);box-shadow:var(--shadow-hover);transform:scale(1.03)}
+.promo-card img{width:100%;height:100%;object-fit:cover}
+.promo-card .promo-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(5,8,26,0.92));padding:10px 14px;font-weight:700;font-size:0.82rem;color:#fff}
+
+.destaque-section{padding:8px 0 24px}
+.destaque-card{flex-shrink:0;width:220px;background:var(--card-bg);border:1px solid var(--border-color);border-radius:var(--radius);overflow:hidden;transition:all .3s;backdrop-filter:blur(10px);cursor:pointer}
+.destaque-card:hover{border-color:var(--neon-cyan);box-shadow:var(--shadow-hover);transform:translateY(-3px)}
+.destaque-card .dc-img{width:100%;height:110px;object-fit:cover;background:var(--glass)}
+.destaque-card .dc-body{padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.destaque-card .dc-name{font-weight:700;font-size:0.82rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-primary)}
+.btn-ver{padding:5px 14px;border-radius:20px;background:var(--teal);color:var(--navy-esc);font-weight:700;font-size:0.75rem;transition:all .25s;flex-shrink:0}
+.btn-ver:hover{background:var(--neon-cyan);box-shadow:var(--glow)}
+
+.brand-section{padding:40px 20px;text-align:center;max-width:600px;margin:0 auto}
+.brand-logo{width:110px;height:110px;border-radius:50%;margin:0 auto 18px;background:linear-gradient(135deg,var(--navy-prof),var(--navy-esc));border:2px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:900;color:var(--neon-cyan);box-shadow:var(--shadow-soft);position:relative;overflow:hidden}
+.brand-logo::after{content:'';position:absolute;inset:6px;border-radius:50%;border:1px solid rgba(0,240,255,0.2)}
+.brand-logo img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1;border-radius:50%}
+.brand-subtitle{font-size:1.2rem;font-weight:800;margin-bottom:8px;color:var(--text-primary)}
+.brand-desc{font-size:0.9rem;color:var(--text-secondary);line-height:1.6;margin-bottom:22px}
+.brand-social{display:flex;justify-content:center;gap:14px}
+.brand-social-btn{width:48px;height:48px;border-radius:50%;background:var(--card-bg);border:1px solid var(--border-color);display:flex;align-items:center;justify-content:center;font-size:1.2rem;transition:all .3s;color:var(--text-secondary)}
+.brand-social-btn:hover{border-color:var(--neon-cyan);color:var(--neon-cyan);box-shadow:var(--shadow-hover);transform:scale(1.1)}
+
+.classes-section{padding:0 20px 40px;max-width:800px;margin:0 auto}
+.accordion-item{background:var(--card-bg);border:1px solid var(--border-color);border-radius:var(--radius);margin-bottom:12px;overflow:hidden;backdrop-filter:blur(10px);transition:all .3s}
+.accordion-header{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;transition:all .2s;font-weight:700;font-size:1rem;color:var(--text-primary)}
+.accordion-header:hover{background:var(--accordion-header-hover)}
+.accordion-header img{width:40px;height:40px;border-radius:8px;object-fit:cover;background:var(--glass)}
+.accordion-header .acc-name{flex:1}
+.accordion-header .acc-arrow{font-size:1.2rem;transition:transform .3s;color:var(--text-muted)}
+.accordion-header.open .acc-arrow{transform:rotate(180deg)}
+.accordion-body{max-height:0;overflow:hidden;transition:max-height .4s ease;padding:0 20px}
+.accordion-body.open{max-height:1000px;padding:0 20px 16px}
+.acc-product{display:flex;align-items:center;gap:12px;background:var(--glass);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:8px;transition:all .2s}
+.acc-product:hover{background:var(--product-hover);border-color:var(--border-strong)}
+.acc-product img{width:48px;height:48px;border-radius:6px;object-fit:cover;background:var(--glass)}
+.acc-product .ap-name{flex:1;font-weight:600;font-size:0.95rem;color:var(--text-primary)}
+.acc-product .btn-ver{padding:5px 16px;font-size:0.78rem}
+.acc-sub-label{font-size:0.8rem;color:var(--teal);font-weight:600;margin-bottom:8px;padding-left:4px}
+.acc-empty{font-size:0.8rem;color:var(--text-muted);padding:8px 4px}
+
+.search-overlay{position:fixed;inset:0;background:rgba(5,8,26,0.9);backdrop-filter:blur(12px);z-index:2000;display:none;align-items:flex-start;justify-content:center;padding:80px 20px 20px}
+.search-overlay.active{display:flex}
+.search-box-large{width:100%;max-width:600px;background:var(--search-bg);border:1px solid var(--search-border);border-radius:var(--radius);padding:20px}
+.search-box-large input{width:100%;background:none;border:none;outline:none;color:var(--text-primary);font-size:1.2rem;font-family:var(--font);padding:8px 0}
+.search-box-large input::placeholder{color:var(--text-muted)}
+.search-results{margin-top:16px;max-height:60vh;overflow-y:auto}
+.search-close{position:absolute;top:20px;right:20px;background:none;color:var(--cinza-tec);font-size:1.5rem;padding:8px}
+.search-close:hover{color:var(--neon-cyan)}
+
+.product-detail{background:var(--detail-bg);border:1px solid var(--border-color);border-radius:var(--radius);padding:24px;margin:0 20px 24px;max-width:1400px;margin-left:auto;margin-right:auto;display:none;backdrop-filter:blur(10px)}
+.product-detail.active{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.pd-grid{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start}
+.pd-img{width:100%;border-radius:var(--radius-sm);object-fit:cover;aspect-ratio:1;background:var(--glass)}
+.pd-info h2{font-size:1.4rem;font-weight:800;margin-bottom:8px;color:var(--neon-cyan)}
+.pd-info .pd-desc{color:var(--text-secondary);line-height:1.6;margin-bottom:16px;font-size:0.95rem}
+.pd-info .pd-cat{font-size:0.8rem;color:var(--teal);margin-bottom:12px;font-weight:600}
+.btn-ir{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--neon-cyan),var(--azul-eletrico));color:var(--navy-esc);font-weight:800;font-size:0.95rem;transition:all .3s}
+.btn-ir:hover{box-shadow:var(--glow);transform:scale(1.03)}
+.btn-close-detail{float:right;background:none;color:var(--text-muted);font-size:1.2rem;padding:4px 8px;border-radius:4px}
+.btn-close-detail:hover{color:var(--neon-cyan)}
+
+.footer{background:var(--footer-bg);border-top:1px solid var(--footer-border);padding:40px 20px;margin-top:20px}
+.footer-inner{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+.footer-logo{display:flex;align-items:center;gap:12px}
+.footer-social{display:flex;gap:20px}
+.footer-social a{display:flex;align-items:center;gap:8px;color:var(--cinza-tec);font-size:1rem;transition:color .2s}
+.footer-social a:hover{color:var(--neon-cyan)}
+
+@media(max-width:900px){
+  .nav-links{display:none;position:absolute;top:64px;left:0;right:0;background:var(--navy-prof);flex-direction:column;padding:16px;border-bottom:1px solid rgba(0,240,255,0.15)}
+  .nav-links.open{display:flex}
+  .nav-toggle{display:block}
+  .pd-grid{grid-template-columns:1fr}
+  .promo-card{width:240px;height:115px}
+  .destaque-card{width:200px}
+  .destaque-card .dc-img{height:100px}
+}
+@media(max-width:600px){
+  .footer-inner{flex-direction:column;text-align:center}
+  .header-inner{padding:0 12px}
+  .brand-logo{width:90px;height:90px;font-size:1.5rem}
+  .promo-card{width:220px;height:105px}
+  .destaque-card{width:180px}
+  .destaque-card .dc-img{height:90px}
+  .destaque-card .dc-name{font-size:0.78rem}
+}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--page-bg)}
+::-webkit-scrollbar-thumb{background:var(--neon-cyan);border-radius:3px}
+
+.empty-state{text-align:center;padding:40px 20px;color:var(--text-muted);background:var(--card-bg);border:1px dashed var(--empty-border);border-radius:var(--radius);max-width:1200px;margin:0 auto;transition:all .4s ease}
+.empty-state .empty-icon{font-size:2.5rem;margin-bottom:12px;opacity:0.5}
+.empty-state p{font-size:0.95rem;color:var(--text-secondary)}
+.empty-state .empty-sub{font-size:0.8rem;margin-top:8px;opacity:0.7}
+
+.setup-hint{background:linear-gradient(135deg,rgba(0,240,255,0.08),rgba(0,168,232,0.05));border:1px solid var(--border-strong);border-radius:var(--radius);padding:16px 20px;margin:20px auto;font-size:0.85rem;color:var(--text-secondary);display:flex;align-items:center;gap:10px;max-width:1200px}
+.setup-hint strong{color:var(--neon-cyan)}
+
+.sync-badge{position:fixed;bottom:20px;left:20px;z-index:9999;background:var(--card-bg);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:8px 14px;font-size:0.75rem;color:var(--text-secondary);display:flex;align-items:center;gap:6px;backdrop-filter:blur(10px)}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:#00ff88;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+</style>
+</head>
+<body data-theme="light">
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo-area">
+      <div class="logo-icon" id="logoIcon"><span id="logoText">DT</span></div>
+      <span class="logo-text" id="storeName">Dtechmaster</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <button class="theme-toggle" id="themeToggle" title="Trocar tema" aria-label="Trocar tema">🌙</button>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    </div>
+    <nav class="nav-links" id="navLinks">
+      <a href="#" class="active">Home</a>
+      <a href="#promocoes">Promoções</a>
+      <a href="#destaques">Destaques</a>
+      <a href="#classes">Classes</a>
+      <a href="#" onclick="openSearch(event)">Pesquisa</a>
+    </nav>
+  </div>
+</header>
+
+<section class="promo-section" id="promocoes">
+  <div class="section-label">Promoções</div>
+  <div class="slider-wrapper" id="promoWrapper"><div class="slider-track" id="promoTrack"></div></div>
+</section>
+
+<section class="destaque-section" id="destaques">
+  <div class="section-label">Destaques</div>
+  <div class="slider-wrapper" id="destaqueWrapper"><div class="slider-track" id="destaqueTrack"></div></div>
+</section>
+
+<section class="brand-section" id="marca">
+  <div class="brand-logo" id="brandLogo"><span id="brandLogoText">DT</span></div>
+  <div class="brand-subtitle" id="brandSubtitle">Inserir um subtítulo</div>
+  <div class="brand-desc" id="brandDesc">Inserir um pouquinho de texto</div>
+  <div class="brand-social" id="brandSocial"></div>
+</section>
+
+<section class="classes-section" id="classes">
+  <div class="section-label" style="padding:0;margin-bottom:16px">Classes</div>
+  <div id="accordionList"></div>
+</section>
+
+<div class="product-detail" id="productDetail">
+  <button class="btn-close-detail" onclick="closeDetail()">✕</button>
+  <div class="pd-grid">
+    <img class="pd-img" id="pdImg" src="" alt="">
+    <div class="pd-info">
+      <div class="pd-cat" id="pdCat"></div>
+      <h2 id="pdName"></h2>
+      <p class="pd-desc" id="pdDesc"></p>
+      <a class="btn-ir" id="pdLink" href="#" target="_blank" rel="noopener">Ver Produto →</a>
+    </div>
+  </div>
+</div>
+
+<div class="search-overlay" id="searchOverlay">
+  <button class="search-close" onclick="closeSearch()">✕</button>
+  <div class="search-box-large">
+    <input type="text" id="searchInput" placeholder="🔍 Buscar produtos por nome..." autofocus>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<footer class="footer" id="contato">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <div class="logo-icon" id="footerLogo"><span id="footerLogoText">DT</span></div>
+      <span class="logo-text" id="footerName">Dtechmaster</span>
+    </div>
+    <div class="footer-social" id="footerSocial"></div>
+  </div>
+</footer>
+
+<div class="sync-badge">
+  <span class="sync-dot"></span>
+  <span id="syncText">Aguardando dados...</span>
+</div>
+
+<script>
+const STORAGE_KEY = 'dtechmaster_data';
+const SYNC_KEY = 'dtechmaster_sync';
+const THEME_KEY = 'dtechmaster_theme';
+
+const EMPTY_DATA = {
+  settings: { storeName: 'Dtechmaster', logo: 'DT', logoImage: '', brandSubtitle: 'Inserir um subtítulo', brandDesc: 'Inserir um pouquinho de texto', defaultTheme: 'light' },
+  banners: [], products: [], categories: [], socialLinks: []
+};
+
+let APP_DATA = loadData();
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) { const p = JSON.parse(raw); return { ...EMPTY_DATA, ...p, settings: { ...EMPTY_DATA.settings, ...(p.settings || {}) } }; }
+  } catch(e) {}
+  return JSON.parse(JSON.stringify(EMPTY_DATA));
+}
+
+function initTheme() {
+  const saved = localStorage.getItem(THEME_KEY);
+  const theme = saved || (APP_DATA.settings?.defaultTheme || 'light');
+  applyTheme(theme);
+}
+function applyTheme(theme) {
+  document.body.setAttribute('data-theme', theme);
+  const btn = document.getElementById('themeToggle');
+  btn.textContent = theme === 'light' ? '🌙' : '☀️';
+  btn.title = theme === 'light' ? 'Ativar modo escuro' : 'Ativar modo claro';
+}
+function toggleTheme() {
+  const current = document.body.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+  localStorage.setItem(THEME_KEY, next);
+  applyTheme(next);
+}
+document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+function renderLogoImage(containerId, textId, imageSrc, fallbackText) {
+  const container = document.getElementById(containerId);
+  const textEl = document.getElementById(textId);
+  const existingImg = container.querySelector('img');
+  if (existingImg) existingImg.remove();
+  if (imageSrc) {
+    const img = document.createElement('img');
+    img.src = imageSrc;
+    img.alt = 'Logo';
+    img.onerror = function() { this.remove(); textEl.textContent = fallbackText; textEl.style.display = ''; };
+    container.insertBefore(img, textEl);
+    textEl.style.display = 'none';
+  } else {
+    textEl.textContent = fallbackText;
+    textEl.style.display = '';
+  }
+}
+
+function buildSlider(trackEl, wrapperEl, items, renderCard, emptyMsg, emptyIcon) {
+  trackEl.innerHTML = '';
+  wrapperEl.style.display = 'block';
+  if (!items.length) {
+    wrapperEl.style.display = 'none';
+    const section = wrapperEl.closest('section');
+    let empty = section.querySelector('.empty-state');
+    if (!empty) { empty = document.createElement('div'); empty.className = 'empty-state'; section.appendChild(empty); }
+    empty.innerHTML = `<div class="empty-icon">${emptyIcon}</div><p>${emptyMsg}</p>`;
+    return;
+  }
+  const existingEmpty = wrapperEl.closest('section').querySelector('.empty-state');
+  if (existingEmpty) existingEmpty.remove();
+  if (items.length === 1) {
+    trackEl.classList.add('static');
+    trackEl.innerHTML = renderCard(items[0]);
+  } else {
+    trackEl.classList.remove('static');
+    const duplicated = [...items, ...items];
+    trackEl.innerHTML = duplicated.map(renderCard).join('');
+  }
+}
+
+function renderPromos() {
+  const banners = (APP_DATA.banners || []).slice(0, 3);
+  buildSlider(document.getElementById('promoTrack'), document.getElementById('promoWrapper'), banners,
+    b => `<div class="promo-card" onclick="window.open('${b.url || '#'}','_blank')"><img src="${b.image}" alt="${b.title}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22280%22 height=%22130%22><rect fill=%22%230A0F2D%22 width=%22280%22 height=%22130%22/><text fill=%22%2300F0FF%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2214%22>Banner</text></svg>'"><div class="promo-overlay">${b.title || 'Promoção'}</div></div>`,
+    'Nenhum banner de promoção', '🖼️'
+  );
+}
+
+function renderDestaques() {
+  const featured = (APP_DATA.products || []).filter(p => p.featured);
+  buildSlider(document.getElementById('destaqueTrack'), document.getElementById('destaqueWrapper'), featured,
+    p => `<div class="destaque-card" onclick="showProduct(${p.id})"><img class="dc-img" src="${p.image}" alt="${p.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22110%22><rect fill=%22%230A0F2D%22 width=%22220%22 height=%22110%22/><text fill=%22%2300F0FF%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2212%22>${encodeURIComponent(p.name.substring(0,20))}</text></svg>'"><div class="dc-body"><span class="dc-name">${p.name}</span><a class="btn-ver" href="${p.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Ver</a></div></div>`,
+    'Nenhum produto em destaque', '⭐'
+  );
+}
+
+function renderBrand() {
+  const s = APP_DATA.settings || {};
+  renderLogoImage('brandLogo', 'brandLogoText', s.logoImage || '', s.logo || 'DT');
+  document.getElementById('brandSubtitle').textContent = s.brandSubtitle || 'Inserir um subtítulo';
+  document.getElementById('brandDesc').textContent = s.brandDesc || 'Inserir um pouquinho de texto';
+  const social = document.getElementById('brandSocial');
+  const links = (APP_DATA.socialLinks || []).slice(0, 3);
+  const iconMap = { instagram: '📷', tiktok: '🎵', whatsapp: '💬', youtube: '▶️', twitter: '🐦', facebook: '👤', telegram: '✈️' };
+  if (!links.length) { social.innerHTML = '<span style="color:var(--text-muted);font-size:0.85rem">Redes em configuração</span>'; }
+  else { social.innerHTML = links.map(l => `<a class="brand-social-btn" href="${l.url}" target="_blank" rel="noopener" title="${l.name}">${l.icon || iconMap[l.platform] || '🔗'}</a>`).join(''); }
+}
+
+function renderAccordion() {
+  const list = document.getElementById('accordionList');
+  const cats = APP_DATA.categories || [];
+  if (!cats.length) { list.innerHTML = '<div class="empty-state"><div class="empty-icon">📂</div><p>Nenhuma categoria cadastrada</p><div class="empty-sub">Adicione categorias no painel admin</div></div>'; return; }
+  list.innerHTML = cats.map(c => {
+    const catProducts = (APP_DATA.products || []).filter(p => p.category === c.name);
+    const subs = c.subcategories || [];
+    return `<div class="accordion-item"><div class="accordion-header" onclick="toggleAccordion(this)">${c.image ? `<img src="${c.image}" alt="${c.name}" onerror="this.style.display='none'">` : '<span style="width:40px;height:40px;background:var(--glass);border-radius:8px;display:flex;align-items:center;justify-content:center">📁</span>'}<span class="acc-name">${c.name}</span><span class="acc-arrow">▼</span></div><div class="accordion-body">${subs.length ? subs.map(sc => { const subProducts = catProducts.filter(p => p.subcategory === sc.name); return `<div style="margin-bottom:12px"><div class="acc-sub-label">› ${sc.name}</div>${subProducts.length ? subProducts.map(p => `<div class="acc-product"><img src="${p.image}" alt="${p.name}" onerror="this.style.background='var(--glass)'"><span class="ap-name">${p.name}</span><a class="btn-ver" href="${p.url}" target="_blank" rel="noopener">Ver</a></div>`).join('') : '<div class="acc-empty">Nenhum produto nesta subclasse</div>'}</div>`; }).join('') : ''}${catProducts.filter(p => !p.subcategory).map(p => `<div class="acc-product"><img src="${p.image}" alt="${p.name}" onerror="this.style.background='var(--glass)'"><span class="ap-name">${p.name}</span><a class="btn-ver" href="${p.url}" target="_blank" rel="noopener">Ver</a></div>`).join('')}${!catProducts.length ? '<div class="acc-empty">Nenhum produto nesta categoria</div>' : ''}</div></div>`;
+  }).join('');
+}
+function toggleAccordion(el) { el.classList.toggle('open'); el.nextElementSibling.classList.toggle('open'); }
+
+function renderSocialFooter() {
+  const footer = document.getElementById('footerSocial');
+  const links = APP_DATA.socialLinks || [];
+  const iconMap = { instagram: '📷', tiktok: '🎵', whatsapp: '💬', youtube: '▶️', twitter: '🐦', facebook: '👤', telegram: '✈️' };
+  if (!links.length) { footer.innerHTML = '<span style="color:var(--cinza-tec);font-size:0.85rem">Redes em configuração</span>'; return; }
+  footer.innerHTML = links.map(l => `<a href="${l.url}" target="_blank" rel="noopener">${l.icon || iconMap[l.platform] || '🔗'} ${l.name}</a>`).join('');
+}
+
+function showProduct(id) {
+  const p = APP_DATA.products.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('pdImg').src = p.image;
+  document.getElementById('pdName').textContent = p.name;
+  document.getElementById('pdDesc').textContent = p.description || 'Sem descrição disponível.';
+  document.getElementById('pdCat').textContent = `${p.category || ''} ${p.subcategory ? '› ' + p.subcategory : ''}`;
+  document.getElementById('pdLink').href = p.url;
+  const detail = document.getElementById('productDetail');
+  detail.classList.add('active');
+  detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+function closeDetail() { document.getElementById('productDetail').classList.remove('active'); }
+
+function openSearch(e) { if(e) e.preventDefault(); document.getElementById('searchOverlay').classList.add('active'); setTimeout(() => document.getElementById('searchInput').focus(), 100); }
+function closeSearch() { document.getElementById('searchOverlay').classList.remove('active'); document.getElementById('searchInput').value = ''; document.getElementById('searchResults').innerHTML = ''; }
+document.getElementById('searchInput').addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  const container = document.getElementById('searchResults');
+  if (!q) { container.innerHTML = ''; return; }
+  const results = (APP_DATA.products || []).filter(p => p.name.toLowerCase().includes(q) || (p.description || '').toLowerCase().includes(q) || (p.category || '').toLowerCase().includes(q));
+  if (!results.length) { container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted)">Nenhum resultado para "' + q + '"</div>'; }
+  else { container.innerHTML = results.map(p => `<div class="acc-product" style="cursor:pointer" onclick="closeSearch();showProduct(${p.id})"><img src="${p.image}" alt="${p.name}" onerror="this.style.background='var(--glass)'"><div style="flex:1"><div style="font-weight:600;font-size:0.95rem;color:var(--text-primary)">${p.name}</div><div style="font-size:0.75rem;color:var(--text-muted)">${p.category || ''} ${p.subcategory ? '› ' + p.subcategory : ''}</div></div><a class="btn-ver" href="${p.url}" target="_blank" onclick="event.stopPropagation()">Ver</a></div>`).join(''); }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSearch(); });
+
+function checkSync() {
+  const lastSync = localStorage.getItem(SYNC_KEY);
+  const stored = localStorage.getItem(STORAGE_KEY + '_ver');
+  if (lastSync && lastSync !== stored) {
+    APP_DATA = loadData();
+    renderAll();
+    localStorage.setItem(STORAGE_KEY + '_ver', lastSync);
+    document.getElementById('syncText').textContent = 'Dados atualizados!';
+    setTimeout(() => { updateSyncText(); }, 3000);
+  }
+}
+function updateSyncText() {
+  const hasData = APP_DATA.products.length || APP_DATA.banners.length;
+  document.getElementById('syncText').textContent = hasData ? 'Dados sincronizados' : 'Aguardando dados...';
+}
+
+function renderAll() {
+  const s = APP_DATA.settings || {};
+  const name = s.storeName || 'Dtechmaster';
+  const logo = s.logo || 'DT';
+  const logoImage = s.logoImage || '';
+  document.getElementById('storeName').textContent = name;
+  document.getElementById('footerName').textContent = name;
+  document.title = name + ' — Loja';
+  renderLogoImage('logoIcon', 'logoText', logoImage, logo);
+  renderLogoImage('footerLogo', 'footerLogoText', logoImage, logo);
+  renderPromos(); renderDestaques(); renderBrand(); renderAccordion(); renderSocialFooter();
+  const isEmpty = !APP_DATA.products.length && !APP_DATA.banners.length && !APP_DATA.categories.length;
+  const existingHint = document.getElementById('setupHint');
+  if (isEmpty && !existingHint) {
+    const hint = document.createElement('div'); hint.className = 'setup-hint'; hint.id = 'setupHint';
+    hint.innerHTML = '💡 <span><strong>Loja em configuração.</strong> Acesse o painel admin para adicionar produtos, banners e categorias.</span>';
+    document.body.insertBefore(hint, document.querySelector('.promo-section'));
+  } else if (!isEmpty && existingHint) { existingHint.remove(); }
+  updateSyncText();
+}
+
+initTheme();
+renderAll();
+setInterval(checkSync, 2000);
+window.refreshStore = function() { APP_DATA = loadData(); renderAll(); };
+</script>
+</body>
+</html>
