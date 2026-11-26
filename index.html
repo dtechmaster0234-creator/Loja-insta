@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dtechmaster — Loja</title>
 
-<!-- ===== FAVICON (SVG embutido, baseado no logo) ===== -->
+<!-- ===== FAVICON ===== -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230A0F2D'/%3E%3Ccircle cx='32' cy='36' r='17' fill='%23ffffff'/%3E%3Cg fill='none' stroke='%2300C4B4' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M32 19 V53'/%3E%3Cpath d='M21 24 Q32 36 21 48'/%3E%3Cpath d='M43 24 Q32 36 43 48'/%3E%3C/g%3E%3Cpath d='M14 16 A22 22 0 0 1 50 16' stroke='%2333E6D2' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230A0F2D'/%3E%3Ccircle cx='32' cy='36' r='17' fill='%23ffffff'/%3E%3Cg fill='none' stroke='%2300C4B4' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M32 19 V53'/%3E%3Cpath d='M21 24 Q32 36 21 48'/%3E%3Cpath d='M43 24 Q32 36 43 48'/%3E%3C/g%3E%3Cpath d='M14 16 A22 22 0 0 1 50 16' stroke='%2333E6D2' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 
@@ -47,7 +47,6 @@ img{max-width:100%;display:block}
 .header{background:var(--header-bg);border-bottom:1px solid var(--header-border);position:sticky;top:0;z-index:1000;backdrop-filter:blur(20px)}
 .header-inner{max-width:1400px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:64px}
 .logo-area{display:flex;align-items:center;gap:12px}
-/* ===== LOGO: agora transparente, SVG preenche ===== */
 .logo-icon{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:visible;flex-shrink:0;background:none!important;box-shadow:none!important;border:none!important}
 .logo-icon::after{display:none!important}
 .logo-icon svg,.logo-icon img{width:100%;height:100%;display:block}
@@ -84,7 +83,6 @@ img{max-width:100%;display:block}
 .btn-ver:hover{background:var(--neon-cyan);box-shadow:var(--glow)}
 
 .brand-section{padding:40px 20px;text-align:center;max-width:600px;margin:0 auto}
-/* ===== LOGO central: transparente, SVG grande ===== */
 .brand-logo{width:130px;height:130px;border-radius:50%;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;overflow:visible;background:none!important;border:none!important;box-shadow:none!important}
 .brand-logo::after{display:none!important}
 .brand-logo svg,.brand-logo img{width:100%;height:100%}
@@ -152,12 +150,12 @@ img{max-width:100%;display:block}
   .destaque-card{width:180px}.destaque-card .dc-img{height:90px}.destaque-card .dc-name{font-size:0.78rem}
 }
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--page-bg)}::-webkit-scrollbar-thumb{background:var(--neon-cyan);border-radius:3px}
+
 .empty-state{text-align:center;padding:40px 20px;color:var(--text-muted);background:var(--card-bg);border:1px dashed var(--empty-border);border-radius:var(--radius);max-width:1200px;margin:0 auto;transition:all .4s ease}
 .empty-state .empty-icon{font-size:2.5rem;margin-bottom:12px;opacity:0.5}
 .empty-state p{font-size:0.95rem;color:var(--text-secondary)}
 .empty-state .empty-sub{font-size:0.8rem;margin-top:8px;opacity:0.7}
-.setup-hint{background:linear-gradient(135deg,rgba(0,240,255,0.08),rgba(0,168,232,0.05));border:1px solid var(--border-strong);border-radius:var(--radius);padding:16px 20px;margin:20px auto;font-size:0.85rem;color:var(--text-secondary);display:flex;align-items:center;gap:10px;max-width:1200px}
-.setup-hint strong{color:var(--neon-cyan)}
+
 .sync-badge{position:fixed;bottom:20px;left:20px;z-index:9999;background:var(--card-bg);border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:8px 14px;font-size:0.75rem;color:var(--text-secondary);display:flex;align-items:center;gap:6px;backdrop-filter:blur(10px)}
 .sync-dot{width:6px;height:6px;border-radius:50%;background:#00ff88;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
@@ -243,10 +241,6 @@ img{max-width:100%;display:block}
 <script>
 const STORAGE_KEY='dtechmaster_data', SYNC_KEY='dtechmaster_sync', THEME_KEY='dtechmaster_theme';
 
-/* ============================================================
-   LOGO DTECH MASTER — SVG embutido (recriação fiel da imagem)
-   Esfera branca + meridianos ciano/verde + texto em arco
-   ============================================================ */
 const LOGO_SVG = `
 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dtech Master">
   <defs>
@@ -286,14 +280,10 @@ function applyTheme(t){document.body.setAttribute('data-theme',t);const b=docume
 function toggleTheme(){const c=document.body.getAttribute('data-theme');const n=c==='light'?'dark':'light';localStorage.setItem(THEME_KEY,n);applyTheme(n);}
 document.getElementById('themeToggle').addEventListener('click',toggleTheme);
 
-/* ===== LOGO: usa imagem do admin se existir; senão usa o SVG ===== */
-function renderLogo(containerId,imageSrc,fallbackText){
+function renderLogo(containerId,imageSrc){
   const el=document.getElementById(containerId);
-  if(imageSrc){
-    el.innerHTML=`<img src="${imageSrc}" alt="Logo" onerror="this.parentNode.innerHTML=window.LOGO_SVG">`;
-  }else{
-    el.innerHTML=LOGO_SVG;
-  }
+  if(imageSrc){el.innerHTML=`<img src="${imageSrc}" alt="Logo" onerror="this.parentNode.innerHTML=window.LOGO_SVG">`;}
+  else{el.innerHTML=LOGO_SVG;}
 }
 
 function buildSlider(trackEl,wrapperEl,items,renderCard,emptyMsg,emptyIcon){
@@ -312,7 +302,7 @@ function renderDestaques(){const f=(APP_DATA.products||[]).filter(p=>p.featured)
   p=>`<div class="destaque-card" onclick="showProduct(${p.id})"><img class="dc-img" src="${p.image}" alt="${p.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22110%22><rect fill=%22%230A0F2D%22 width=%22220%22 height=%22110%22/><text fill=%22%2300F0FF%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2212%22>${encodeURIComponent(p.name.substring(0,20))}</text></svg>'"><div class="dc-body"><span class="dc-name">${p.name}</span><a class="btn-ver" href="${p.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Ver</a></div></div>`,
   'Nenhum produto em destaque','⭐');}
 
-function renderBrand(){const s=APP_DATA.settings||{};renderLogo('brandLogo',s.logoImage||'',s.logo||'DT');
+function renderBrand(){const s=APP_DATA.settings||{};renderLogo('brandLogo',s.logoImage||'');
   document.getElementById('brandSubtitle').textContent=s.brandSubtitle||'Inserir um subtítulo';
   document.getElementById('brandDesc').textContent=s.brandDesc||'Inserir um pouquinho de texto';
   const soc=document.getElementById('brandSocial');const links=(APP_DATA.socialLinks||[]).slice(0,3);
@@ -349,13 +339,19 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSearch();});
 function checkSync(){const l=localStorage.getItem(SYNC_KEY);const s=localStorage.getItem(STORAGE_KEY+'_ver');if(l&&l!==s){APP_DATA=loadData();renderAll();localStorage.setItem(STORAGE_KEY+'_ver',l);document.getElementById('syncText').textContent='Dados atualizados!';setTimeout(()=>{updateSyncText();},3000);}}
 function updateSyncText(){const h=APP_DATA.products.length||APP_DATA.banners.length;document.getElementById('syncText').textContent=h?'Dados sincronizados':'Aguardando dados...';}
 
-function renderAll(){const s=APP_DATA.settings||{};const name=s.storeName||'Dtechmaster';const logo=s.logo||'DT';const li=s.logoImage||'';
-  document.getElementById('storeName').textContent=name;document.getElementById('footerName').textContent=name;document.title=name+' — Loja';
-  renderLogo('logoIcon',li,logo);renderLogo('footerLogo',li,logo);
+function renderAll(){
+  const s=APP_DATA.settings||{};
+  const name=s.storeName||'Dtechmaster';
+  const logo=s.logo||'DT';
+  const li=s.logoImage||'';
+  document.getElementById('storeName').textContent=name;
+  document.getElementById('footerName').textContent=name;
+  document.title=name+' — Loja';
+  renderLogo('logoIcon',li);
+  renderLogo('footerLogo',li);
   renderPromos();renderDestaques();renderBrand();renderAccordion();renderSocialFooter();
-  const empty=!APP_DATA.products.length&&!APP_DATA.banners.length&&!APP_DATA.categories.length;const eh=document.getElementById('setupHint');
-  if(empty&&!eh){const h=document.createElement('div');h.className='setup-hint';h.id='setupHint';h.innerHTML='💡 <span><strong>Loja em configuração.</strong> Acesse o painel admin para adicionar produtos, banners e categorias.</span>';document.body.insertBefore(h,document.querySelector('.promo-section'));}else if(!empty&&eh){eh.remove();}
-  updateSyncText();}
+  updateSyncText();
+}
 
 initTheme();renderAll();setInterval(checkSync,2000);
 window.LOGO_SVG=LOGO_SVG;
